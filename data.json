@@ -1,0 +1,19 @@
+{
+	"authority": {
+		"enableAdmin": true,
+		"template": {
+			"country": "IT",
+			"organization": "Nethical s.r.l.",
+			"locality": "Bologna",
+			"province": "Italy"
+		},
+		"claims": {
+			"maxTLSCertDuration": "26281h",
+			"defaultTLSCertDuration": "26280h",
+			"maxHostSSHCertDuration": "26281h",
+			"defaultHostSSHCertDuration": "26280h",
+			"maxUserSSHCertDuration": "26281h",
+			"defaultUserSSHCertDuration": "26280h"
+		}
+	}
+}
