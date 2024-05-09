@@ -1,8 +1,14 @@
 #!/bin/bash
+function start-docker() {
+    realdocker='/c/Program Files/Docker/Docker/Resources/bin/docker'
+    export MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL="*"
+    printf "%s\0" "$@" > /tmp/args.txt
+    winpty bash -c "xargs -0a /tmp/args.txt '$realdocker'" &
+}
 docker pull smallstep/step-ca
 docker pull alpine/openssl
 docker pull stedolan/jq
-docker run -it -v "$PWD:/home/step" -p 9000:9000  -e "DOCKER_STEPCA_INIT_NAME=Smallstep"  -e "DOCKER_STEPCA_INIT_DNS_NAMES=localhost,$(hostname)" -e "DOCKER_STEPCA_INIT_REMOTE_MANAGEMENT=true" --name step smallstep/step-ca &
+start-docker run -it -v "$PWD:/home/step" -p 9000:9000  -e "DOCKER_STEPCA_INIT_NAME=Smallstep"  -e "DOCKER_STEPCA_INIT_DNS_NAMES=localhost,$(hostname)" -e "DOCKER_STEPCA_INIT_REMOTE_MANAGEMENT=true" --name step smallstep/step-ca
 docker run -it -v "$PWD:/home/step" --entrypoint /home/step/resources/script.sh --name jq stedolan/jq
 docker restart step
 docker exec -it step step ca certificate "nethical.vitaever.localhost" --not-after=26280h /home/step/cert/client.crt /home/step/cert/client.key
